@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { supabaseClaveServicio, supabaseUrl } from "@/lib/env";
 
 let instancia: SupabaseClient | null = null;
 
@@ -9,14 +10,7 @@ let instancia: SupabaseClient | null = null;
  */
 export function supabaseAdmin(): SupabaseClient {
   if (!instancia) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-    if (!url || !key) {
-      throw new Error(
-        "Faltan NEXT_PUBLIC_SUPABASE_URL o SUPABASE_SERVICE_ROLE_KEY en el entorno.",
-      );
-    }
-    instancia = createClient(url, key, {
+    instancia = createClient(supabaseUrl(), supabaseClaveServicio(), {
       auth: { persistSession: false, autoRefreshToken: false },
     });
   }

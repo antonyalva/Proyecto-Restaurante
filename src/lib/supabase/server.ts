@@ -1,6 +1,7 @@
 import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { supabaseClavePublica, supabaseUrl } from "@/lib/env";
 
 /**
  * Cliente de Supabase ligado a la sesión del usuario (cookies).
@@ -9,10 +10,7 @@ import { cookies } from "next/headers";
 export async function crearClienteSesion() {
   const cookieStore = await cookies();
 
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  return createServerClient(supabaseUrl(), supabaseClavePublica(), {
       cookies: {
         getAll() {
           return cookieStore.getAll();
@@ -28,6 +26,5 @@ export async function crearClienteSesion() {
           }
         },
       },
-    },
-  );
+  });
 }
