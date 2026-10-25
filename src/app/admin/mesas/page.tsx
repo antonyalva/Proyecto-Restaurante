@@ -1,5 +1,6 @@
 import { Boton, Campo, EnlaceBoton, Entrada, Insignia, Tabla, Tarjeta, Td, Th, Titulo } from "@/components/ui";
 import { requerirAdmin } from "@/lib/auth";
+import { urlBase } from "@/lib/env";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import type { Mesa } from "@/lib/types";
 import { alternarMesa, crearMesas, regenerarToken, renombrarMesa } from "./actions";
@@ -8,7 +9,7 @@ export default async function Mesas() {
   const { local } = await requerirAdmin();
   const { data } = await supabaseAdmin().from("mesas").select("*").eq("local_id", local.id).order("numero");
   const mesas = (data ?? []) as Mesa[];
-  const base = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const base = urlBase();
 
   return (
     <>

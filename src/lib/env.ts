@@ -14,6 +14,12 @@ function primera(...nombres: string[]): string | undefined {
   return undefined;
 }
 
+/** URL pública de la app (para los QR), sin barra final. */
+export function urlBase(): string {
+  const v = primera("NEXT_PUBLIC_APP_URL") ?? (primera("VERCEL_PROJECT_PRODUCTION_URL") ? `https://${primera("VERCEL_PROJECT_PRODUCTION_URL")}` : "http://localhost:3000");
+  return v.replace(/\/+$/, "");
+}
+
 export function supabaseUrl(): string {
   const v = primera("NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_URL");
   if (!v) throw new Error("Falta la URL de Supabase: definí NEXT_PUBLIC_SUPABASE_URL (o SUPABASE_URL) en el entorno.");
